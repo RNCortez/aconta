@@ -1,7 +1,5 @@
 package com.program.aconta.resources;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,9 @@ public class CategoriaResource {
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Categoria obj = service.buscar(id);
-		
  		return ResponseEntity.ok().body(obj);
+ 		
+ 		
 	}
 
 }
