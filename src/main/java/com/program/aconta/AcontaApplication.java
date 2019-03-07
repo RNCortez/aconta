@@ -9,14 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.program.aconta.domain.Categoria;
 import com.program.aconta.domain.Cidade;
-import com.program.aconta.domain.Cliente;
+import com.program.aconta.domain.Usuario;
 import com.program.aconta.domain.Endereco;
 import com.program.aconta.domain.Estado;
 import com.program.aconta.domain.Produto;
 import com.program.aconta.domain.enums.TipoUsuario;
 import com.program.aconta.repositories.CategoriaRepository;
 import com.program.aconta.repositories.CidadeRepository;
-import com.program.aconta.repositories.ClienteRepository;
+import com.program.aconta.repositories.UsuarioRepository;
 import com.program.aconta.repositories.EnderecoRepository;
 import com.program.aconta.repositories.EstadoRepository;
 import com.program.aconta.repositories.ProdutoRepository;
@@ -37,7 +37,7 @@ public class AcontaApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	
 	@Autowired
-	private ClienteRepository clienteRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
@@ -90,7 +90,7 @@ public class AcontaApplication implements CommandLineRunner {
 		
 		//Teste Usuario
 		
-		Cliente usu1 = new Cliente(null, "Rafael Cortez","rafael.cortez@hotmail.com",
+		Usuario usu1 = new Usuario(null, "Rafael Cortez","rafael.cortez@hotmail.com",
 				"38948876805","18988086086",TipoUsuario.PESSOAFISICA);
 		
 		Endereco e1 = new Endereco(null, "Rua YosikoAkamine",
@@ -101,7 +101,7 @@ public class AcontaApplication implements CommandLineRunner {
 		
 		usu1.getEnderecos().addAll(Arrays.asList(e1,e2));
 		
-		clienteRepository.saveAll(Arrays.asList(usu1));	
+		usuarioRepository.saveAll(Arrays.asList(usu1));	
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 	
 		
