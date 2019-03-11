@@ -1,61 +1,48 @@
 package com.program.aconta.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Produto implements Serializable{
+public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private String nome;
-	private Double preco;
+	private Date instante;
 	
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "PRODUTO_CATEGORIA",
-		joinColumns = @JoinColumn(name = "produto_id"),
-		inverseJoinColumns = @JoinColumn(name = "categoria_id")	
-	)
-	private List<Categoria> categorias= new ArrayList<>();
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
+	private Pagamento pagamento;
 	
-	@OneToMany(mappedBy="id.produto")
+	@ManyToOne
+	@JoinColumn(name="usuario_id")
+	private Usuario usuario;
+	
+	@OneToMany(mappedBy="id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
-
 	
-	public Produto() {}
+	public Pedido() {}
 
-	public Produto(Integer id, String nome, Double preco) {
+	public Pedido(Integer id, Date instante, Usuario usuario) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.preco = preco;
+		this.instante = instante;
+		this.usuario = usuario;
 	}
 
-	public List<Pedido> getPedidos(){
-		List<Pedido> lista = new ArrayList<>();
-		for (ItemPedido x : itens) {
-			lista.add(x.getPedido());
-		}
-		return lista;
-	}
-	
 	public Integer getId() {
 		return id;
 	}
@@ -64,28 +51,28 @@ public class Produto implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Date getInstante() {
+		return instante;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setInstante(Date instante) {
+		this.instante = instante;
 	}
 
-	public Double getPreco() {
-		return preco;
+	public Pagamento getPagamento() {
+		return pagamento;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setPagamento(Pagamento pagamento) {
+		this.pagamento = pagamento;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public Set<ItemPedido> getItens() {
@@ -95,7 +82,8 @@ public class Produto implements Serializable{
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
 	}
-
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -112,7 +100,7 @@ public class Produto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Pedido other = (Pedido) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -121,7 +109,6 @@ public class Produto implements Serializable{
 		return true;
 	}
 
-	
 	
 	
 	

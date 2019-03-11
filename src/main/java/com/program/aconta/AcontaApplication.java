@@ -1,5 +1,6 @@
 package com.program.aconta;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.program.aconta.domain.Categoria;
 import com.program.aconta.domain.Cidade;
-import com.program.aconta.domain.Usuario;
 import com.program.aconta.domain.Endereco;
 import com.program.aconta.domain.Estado;
+import com.program.aconta.domain.ItemPedido;
+import com.program.aconta.domain.Pagamento;
+import com.program.aconta.domain.Pedido;
 import com.program.aconta.domain.Produto;
+import com.program.aconta.domain.Usuario;
+import com.program.aconta.domain.enums.EstadoPagamento;
 import com.program.aconta.domain.enums.TipoUsuario;
 import com.program.aconta.repositories.CategoriaRepository;
 import com.program.aconta.repositories.CidadeRepository;
-import com.program.aconta.repositories.UsuarioRepository;
 import com.program.aconta.repositories.EnderecoRepository;
 import com.program.aconta.repositories.EstadoRepository;
+import com.program.aconta.repositories.ItemPedidoRepository;
+import com.program.aconta.repositories.PagamentoRepository;
+import com.program.aconta.repositories.PedidoRepository;
 import com.program.aconta.repositories.ProdutoRepository;
+import com.program.aconta.repositories.UsuarioRepository;
 
 @SpringBootApplication
 public class AcontaApplication implements CommandLineRunner {
@@ -42,7 +50,14 @@ public class AcontaApplication implements CommandLineRunner {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itempedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AcontaApplication.class, args);
@@ -103,7 +118,40 @@ public class AcontaApplication implements CommandLineRunner {
 		
 		usuarioRepository.saveAll(Arrays.asList(usu1));	
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
-	
+		
+		//Teste Pedido
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null,sdf.parse("08/03/2019 08:40"),usu1);
+		Pedido ped2= new Pedido(null,sdf.parse("10/03/2019 08:50"), usu1);
+		
+		Pagamento pag1 = new Pagamento(null, EstadoPagamento.PENDENTE, ped1);
+		ped1.setPagamento(pag1);
+		
+		Pagamento pag2 = new Pagamento(null, EstadoPagamento.QUITADO, ped2);
+		ped2.setPagamento(pag2);
+		
+		usu1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
+		
+		//Items de pedido teste
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 3, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itempedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 		
 	}
 	

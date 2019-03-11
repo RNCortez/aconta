@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.program.aconta.domain.enums.TipoUsuario;
 
 @Entity
@@ -25,8 +26,12 @@ public class Usuario implements Serializable {
 	private String telefone;
 	private Integer tipo;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy="usuario")
 	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@OneToMany(mappedBy="usuario")
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Usuario() {}
 
@@ -94,6 +99,16 @@ public class Usuario implements Serializable {
 
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
+	}
+
+	
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
