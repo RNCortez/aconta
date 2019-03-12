@@ -69,6 +69,11 @@ public class AcontaApplication implements CommandLineRunner {
 		//teste categoria e produto
 		Categoria cat1 = new Categoria(null,"Bebidas");
 		Categoria cat2 = new Categoria(null,"Lanches");
+		Categoria cat3 = new Categoria(null,"Sobremesa");
+		Categoria cat4 = new Categoria(null,"Elmachips");
+		Categoria cat5 = new Categoria(null,"Doces");
+		Categoria cat6 = new Categoria(null,"Sucos");
+		Categoria cat7 = new Categoria(null,"Light");
 		
 		Produto p1 = new Produto(null,"x-burguer",13.00);
 		Produto p2 = new Produto(null,"suco de laranja",5.00);
@@ -86,7 +91,7 @@ public class AcontaApplication implements CommandLineRunner {
 		
 		
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
 		//Teste Estado e cidade

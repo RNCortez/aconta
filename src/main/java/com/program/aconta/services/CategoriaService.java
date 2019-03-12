@@ -1,12 +1,17 @@
 package com.program.aconta.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.program.aconta.domain.Categoria;
+import com.program.aconta.dto.CategoriaDTO;
 import com.program.aconta.repositories.CategoriaRepository;
 import com.program.aconta.services.exception.DataIntegrityException;
 import com.program.aconta.services.exception.ObjectNotFoundException;
@@ -43,4 +48,23 @@ public class CategoriaService {
 		}
 		
 	}
+	
+	public List<Categoria> findAll() {
+		
+		return repo.findAll();
+		
+	}
+	
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),
+				orderBy);
+		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		
+		return new Categoria(objDto.getId(),objDto.getNome());
+	}
+	
 }
