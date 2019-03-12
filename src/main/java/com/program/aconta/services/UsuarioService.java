@@ -15,7 +15,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository repo;
 	
-	public Usuario buscar(Integer id) {
+	public Usuario find(Integer id) {
 		Optional<Usuario> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
